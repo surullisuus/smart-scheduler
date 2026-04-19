@@ -1,0 +1,68 @@
+.calendar-container {
+    margin-top: 30px;
+    background: #0b1220;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    position: sticky;
+    top: 0;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.day-header {
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.calendar-body {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    background-image: linear-gradient(rgba(148,163,184,0.12) 1px, transparent 1px);
+    background-size: 100% 60px;
+}
+
+.time-column {
+    display: flex;
+    flex-direction: column;
+    height: 660px;
+    position: sticky;
+    left: 0;
+    background: #0f172a;
+    z-index: 5;
+    border-right: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.time-cell {
+    height: 60px;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.day-column {
+    position: relative;
+    border-left: 1px solid rgba(148, 163, 184, 0.15);
+    height: 660px;
+    background: rgba(255,255,255,0.01);
+}
+
+
+/* EVENTO */
+
+.calendar-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.calendar-wrapper::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
