@@ -56,3 +56,33 @@ export const groupOverlappingEvents = (events) => {
 
   return groups;
 };
+
+// obtener Semana
+
+export const getWeek = (startDate = new Date()) => {
+  const date = new Date(startDate);
+
+  const day = date.getDay(); // 0 = domingo
+  const diff = day === 0 ? -6 : 1 - day;
+
+  const monday = new Date(date);
+  monday.setDate(date.getDate() + diff);
+
+  const days = [];
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+
+    days.push({
+      date: d,
+      label: d.toLocaleDateString("es-ES", {
+        weekday: "short",
+        day: "numeric"
+      })
+    });
+  }
+
+  return days;
+};
+

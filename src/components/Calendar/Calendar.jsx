@@ -1,49 +1,92 @@
 import EventBlock from "../EventBlock/EventBlock";
-import { groupOverlappingEvents } from "../../utils/eventUtils";
+import { useState, useMemo } from "react";
+import { getWeek, groupOverlappingEvents } from "../../utils/eventUtils";
 import "./Calendar.css";
 
 function Calendar({ events, updateEvent, onSelectEvent }) {
-    const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-    return (
-        <div className="calendar-container">
-            <div className="calendar-body">
+  const days = useMemo(() => getWeek(currentDate), [currentDate]);
 
-                {/* Columna de horas */}
-                <div className="time-column">
-                    {Array.from({ length: 11 }, (_, i) => (
-                        <div key={i} className="time-cell">
-                            {8 + i}:00
-                        </div>
-                    ))}
-                </div>
+ const goToNextWeek = () => {
+    const next = new Date(currentDate);
+    next.setDate(currentDate.getDate() + 7);
+    setCurrentDate(next);
+  };
 
-                {/* Columnas por día */}
-                {days.map(day => {
-                    const dayEvents = events.filter(e => e.day === day);
-                    const groups = groupOverlappingEvents(dayEvents);
+  const goToPrevWeek = () => {
+    const prev = new Date(currentDate);
+    prev.setDate(currentDate.getDate() - 7);
+    setCurrentDate(prev);
+  };
 
-                    return (
-                        <div key={day} className="day-column">
-                            {groups.map(group =>
-                                group.map((event, index) => (
-                                    <EventBlock
-                                        key={event.id}
-                                        event={event}
-                                        index={index}
-                                        total={group.length}
-                                        updateEvent={updateEvent}
-                                        onSelect={onSelectEvent}
-                                    />
-                                ))
-                            )}
-                        </div>
-                    );
-                })}
+  const goToToday = () => {
+    setCurrentDate(new Date());
+  };
 
+  return (
+    <div className="calendar-container">
+
+      <div className="calendar-nav">
+        <button onClick={goToPrevWeek}>←</button>
+        <button onClick={goToToday}>Hoy</button>
+        <button onClick={goToNextWeek}>→</button>
+      </div>
+
+      {/* HEADER (días) */}
+      <div className="calendar-header">
+        <div></div> {/* espacio para la columna de horas */}
+
+        {days.map(day => (
+          <div
+            key={day.date.toISOString()}
+            className="day-header"
+          >
+            {day.label}
+          </div>
+        ))}
+      </div>
+
+      {/* BODY */}
+      <div className="calendar-body">
+
+        {/* Columna de horas */}
+        <div className="time-column">
+          {Array.from({ length: 24 }, (_, i) => (
+            <div key={i} className="time-cell">
+              {String(i).padStart(2, "0")}:00
             </div>
+          ))}
         </div>
-    );
+
+        {/* Columnas por día */}
+        {days.map(day => {
+          const dayEvents = events.filter(e =>
+            new Date(e.date).toDateString() === day.date.toDateString()
+          );
+          const groups = groupOverlappingEvents(dayEvents);
+
+          return (
+            <div key={day.date.toISOString()} className="day-column">
+              {groups.map(group =>
+                group.map((event, index) => (
+                  <EventBlock
+                    key={event.id}
+                    event={event}
+                    index={index}
+                    total={group.length}
+                    updateEvent={updateEvent}
+                    onSelect={onSelectEvent}
+                  />
+                ))
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+    </div>
+  );
 }
 
 export default Calendar;

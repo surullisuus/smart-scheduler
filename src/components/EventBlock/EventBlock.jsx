@@ -11,7 +11,7 @@ function EventBlock({ event, index, total, updateEvent, onSelect }) {
     const start = toMinutes(event.start);
     const end = toMinutes(event.end);
 
-    const dayStart = 8 * 60;
+    const dayStart = 0;
 
     const pixelsPerMinute = 1; 
 
