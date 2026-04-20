@@ -76,10 +76,8 @@ export const getWeek = (startDate = new Date()) => {
 
     days.push({
       date: d,
-      label: d.toLocaleDateString("es-ES", {
-        weekday: "short",
-        day: "numeric"
-      })
+      dayName: d.toLocaleDateString("es-ES", { weekday: "short" }),
+      dayNumber: d.getDate()
     });
   }
 

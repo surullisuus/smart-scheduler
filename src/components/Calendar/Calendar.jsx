@@ -7,8 +7,12 @@ function Calendar({ events, updateEvent, onSelectEvent }) {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const days = useMemo(() => getWeek(currentDate), [currentDate]);
+  const monthLabel = currentDate.toLocaleDateString("es-ES", {
+    month: "long",
+    year: "numeric"
+  });
 
- const goToNextWeek = () => {
+  const goToNextWeek = () => {
     const next = new Date(currentDate);
     next.setDate(currentDate.getDate() + 7);
     setCurrentDate(next);
@@ -24,25 +28,52 @@ function Calendar({ events, updateEvent, onSelectEvent }) {
     setCurrentDate(new Date());
   };
 
+  const isToday = (date) => {
+    const today = new Date();
+
+    return date.toDateString() === today.toDateString();
+  };
+
+  const goToNextMonth = () => {
+    const next = new Date(currentDate);
+    next.setMonth(currentDate.getMonth() + 1);
+    setCurrentDate(next);
+  };
+
+  const goToPrevMonth = () => {
+    const prev = new Date(currentDate);
+    prev.setMonth(currentDate.getMonth() - 1);
+    setCurrentDate(prev);
+  };
+
   return (
     <div className="calendar-container">
 
       <div className="calendar-nav">
+        <button onClick={goToPrevMonth}>⟨⟨</button>
         <button onClick={goToPrevWeek}>←</button>
         <button onClick={goToToday}>Hoy</button>
         <button onClick={goToNextWeek}>→</button>
+        <button onClick={goToNextMonth}>⟩⟩</button>
       </div>
+
+      
+      {/* MES ACTUAL */}
+      <h2 className="month-label">{monthLabel}</h2>
 
       {/* HEADER (días) */}
       <div className="calendar-header">
         <div></div> {/* espacio para la columna de horas */}
-
         {days.map(day => (
           <div
             key={day.date.toISOString()}
             className="day-header"
           >
-            {day.label}
+            <span>{day.dayName}</span>
+
+            <span style={{ marginLeft: 6 }} className={isToday(day.date) ? "today-badge" : ""}>
+              {day.dayNumber}
+            </span>
           </div>
         ))}
       </div>
@@ -67,7 +98,10 @@ function Calendar({ events, updateEvent, onSelectEvent }) {
           const groups = groupOverlappingEvents(dayEvents);
 
           return (
-            <div key={day.date.toISOString()} className="day-column">
+            <div
+              key={day.date.toISOString()}
+              className={`day-column ${isToday(day.date) ? "today-column" : ""}`}
+            >
               {groups.map(group =>
                 group.map((event, index) => (
                   <EventBlock
