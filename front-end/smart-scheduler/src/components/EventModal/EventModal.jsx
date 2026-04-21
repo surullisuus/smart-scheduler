@@ -45,26 +45,28 @@ function EventModal({ event, onClose, onDelete, onUpdate }) {
                 />
 
                 <div className="modal-buttons">
-
                     <button
+                        className="btn-save"
                         onClick={() => {
-                            const id = event.id;
-
-                            onUpdate({
-                                ...event,
-                                ...form
-                            });
-
+                            const updated = { ...event, ...form };
+                            onUpdate(updated);
                             onClose();
                         }}
                     >
                         Guardar
                     </button>
-                    <button onClick={() => onDelete(event.id)}>
+
+                    <button
+                        className="btn-delete"
+                        onClick={() => onDelete(event.id)}
+                    >
                         Eliminar
                     </button>
 
-                    <button onClick={onClose}>
+                    <button
+                        className="btn-close"
+                        onClick={onClose}
+                    >
                         Cerrar
                     </button>
                 </div>

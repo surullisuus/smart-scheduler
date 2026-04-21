@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./EventForm.css";
-import { getRandomColor } from  "../../utils/colors"
+import { getRandomColor } from "../../utils/colors"
 
 /**
  * Formulario para crear eventos
@@ -54,8 +54,33 @@ function EventForm({ addEvent, days }) {
           </option>
         ))}
       </select>
-      <input type="time" name="start" value={form.start} onChange={handleChange} />
-      <input type="time" name="end" value={form.end} onChange={handleChange} />
+      <select name="start" value={form.start} onChange={handleChange}>
+        <option value="">Hora inicio</option>
+        {Array.from({ length: 24 }, (_, h) =>
+          ["00", "30"].map(m => {
+            const time = `${String(h).padStart(2, "0")}:${m}`;
+            return (
+              <option key={time} value={time}>
+                {time}
+              </option>
+            );
+          })
+        )}
+      </select>
+
+      <select name="end" value={form.end} onChange={handleChange}>
+        <option value="">Hora fin</option>
+        {Array.from({ length: 24 }, (_, h) =>
+          ["00", "30"].map(m => {
+            const time = `${String(h).padStart(2, "0")}:${m}`;
+            return (
+              <option key={time} value={time}>
+                {time}
+              </option>
+            );
+          })
+        )}
+      </select>
 
       <button type="submit">Agregar</button>
     </form>

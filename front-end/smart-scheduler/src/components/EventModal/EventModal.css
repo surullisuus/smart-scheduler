@@ -57,21 +57,30 @@
   transition: 0.2s ease;
 }
 
-.modal button:first-of-type {
-  background: #ef4444;
+.btn-save {
+  background: #22c55e; /* verde */
   color: white;
 }
 
-.modal button:first-of-type:hover {
+.btn-save:hover {
+  background: #16a34a;
+}
+
+.btn-delete {
+  background: #ef4444; /* rojo */
+  color: white;
+}
+
+.btn-delete:hover {
   background: #dc2626;
 }
 
-.modal button:last-of-type {
-  background: #334155;
+.btn-close {
+  background: #334155; /* gris */
   color: #e2e8f0;
 }
 
-.modal button:last-of-type:hover {
+.btn-close:hover {
   background: #475569;
 }
 
