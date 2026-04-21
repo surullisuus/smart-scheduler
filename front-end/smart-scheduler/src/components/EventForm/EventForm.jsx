@@ -1,13 +1,14 @@
 import { useState } from "react";
 import "./EventForm.css";
+import { getRandomColor } from  "../../utils/colors"
 
 /**
  * Formulario para crear eventos
  */
-function EventForm({ addEvent }) {
+function EventForm({ addEvent, days }) {
   const [form, setForm] = useState({
     title: "",
-    day: "",
+    date: "",
     start: "",
     end: ""
   });
@@ -23,8 +24,15 @@ function EventForm({ addEvent }) {
     e.preventDefault();
 
     try {
-      addEvent(form);
-      setForm({ title: "", day: "", start: "", end: "" });
+      addEvent({
+        title: form.title,
+        date: form.date.split("T")[0],
+        start: form.start,
+        end: form.end,
+        color: getRandomColor()
+      });
+
+      setForm({ title: "", date: "", start: "", end: "" });
     } catch (error) {
       alert(error.message);
     }
@@ -35,13 +43,16 @@ function EventForm({ addEvent }) {
       <h2>Nuevo evento</h2>
 
       <input name="title" placeholder="Título" value={form.title} onChange={handleChange} />
-      <select name="day" value={form.day} onChange={handleChange}>
+      <select name="date" value={form.date} onChange={handleChange}>
         <option value="">Seleccionar día</option>
-        <option>Lunes</option>
-        <option>Martes</option>
-        <option>Miércoles</option>
-        <option>Jueves</option>
-        <option>Viernes</option>
+        {days.map(day => (
+          <option
+            key={day.date.toISOString()}
+            value={day.date.toISOString()}
+          >
+            {day.dayName} {day.dayNumber}
+          </option>
+        ))}
       </select>
       <input type="time" name="start" value={form.start} onChange={handleChange} />
       <input type="time" name="end" value={form.end} onChange={handleChange} />

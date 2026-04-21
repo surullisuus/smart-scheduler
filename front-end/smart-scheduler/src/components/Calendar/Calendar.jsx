@@ -57,7 +57,7 @@ function Calendar({ events, updateEvent, onSelectEvent }) {
         <button onClick={goToNextMonth}>⟩⟩</button>
       </div>
 
-      
+
       {/* MES ACTUAL */}
       <h2 className="month-label">{monthLabel}</h2>
 
@@ -93,7 +93,7 @@ function Calendar({ events, updateEvent, onSelectEvent }) {
         {/* Columnas por día */}
         {days.map(day => {
           const dayEvents = events.filter(e =>
-            new Date(e.date).toDateString() === day.date.toDateString()
+            e.date?.slice(0, 10) === day.date.toISOString().slice(0, 10)
           );
           const groups = groupOverlappingEvents(dayEvents);
 
