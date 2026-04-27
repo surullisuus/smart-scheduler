@@ -21,6 +21,7 @@
   font-weight: bold;
   color: #e2e8f0;
   border-left: 1px solid #334155;
+   position: sticky;
 }
 
 .calendar-body {
@@ -28,6 +29,12 @@
     grid-template-columns: 80px repeat(7, 1fr);
     background-image: linear-gradient(rgba(148,163,184,0.12) 1px, transparent 1px);
     background-size: 100% 60px;
+}
+
+.calendar-scroll {
+  height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .time-column {
@@ -46,6 +53,42 @@
     font-size: 0.75rem;
     color: #94a3b8;
     border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.time-header {
+  position: relative;
+  background: #020617;
+  border-right: 1px solid rgba(148, 163, 184, 0.3);
+  overflow: hidden;
+}
+
+/* Línea diagonal */
+.time-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom left,
+    transparent 49.5%,
+    rgba(148, 163, 184, 0.4) 50%,
+    transparent 50.5%
+  );
+  pointer-events: none;
+}
+
+.label-time {
+  position: absolute;
+  left: 8px;
+  top:14px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.label-day {
+  position: absolute;
+  right: 8px;
+  font-size: 0.7rem;
+  color: #94a3b8;
 }
 
 .day-column {
@@ -88,6 +131,13 @@
   background: #334155;
 }
 
+.calendar-nav input {
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid rgba(148,163,184,0.2);
+  padding: 6px;
+  border-radius: 6px;
+}
 
 /* Header */
 .day-header.today {

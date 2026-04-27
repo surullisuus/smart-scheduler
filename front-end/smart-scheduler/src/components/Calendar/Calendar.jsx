@@ -50,6 +50,11 @@ function Calendar({ events, updateEvent, onSelectEvent }) {
     <div className="calendar-container">
 
       <div className="calendar-nav">
+        <input
+          type="date"
+          value={currentDate.toISOString().split("T")[0]}
+          onChange={(e) => setCurrentDate(new Date(e.target.value))}
+        />
         <button onClick={goToPrevMonth}>⟨⟨</button>
         <button onClick={goToPrevWeek}>←</button>
         <button onClick={goToToday}>Hoy</button>
@@ -60,65 +65,71 @@ function Calendar({ events, updateEvent, onSelectEvent }) {
 
       {/* MES ACTUAL */}
       <h2 className="month-label">{monthLabel}</h2>
-
-      {/* HEADER (días) */}
-      <div className="calendar-header">
-        <div></div> {/* espacio para la columna de horas */}
-        {days.map(day => (
-          <div
-            key={day.date.toISOString()}
-            className="day-header"
-          >
-            <span>{day.dayName}</span>
-
-            <span style={{ marginLeft: 6 }} className={isToday(day.date) ? "today-badge" : ""}>
-              {day.dayNumber}
-            </span>
+      <div className="calendar-scroll">
+        {/* HEADER (días) */}
+        <div className="calendar-header">
+          <div className="time-header">
+            <span className="label-time">Hora</span>
+            <span className="label-day">Día</span>
           </div>
-        ))}
-      </div>
+          {/* espacio para la columna de horas */}
+          {days.map(day => (
+            <div
+              key={day.date.toISOString()}
+              className="day-header"
+            >
+              <span>{day.dayName}</span>
 
-      {/* BODY */}
-      <div className="calendar-body">
-
-        {/* Columna de horas */}
-        <div className="time-column">
-          {Array.from({ length: 24 }, (_, i) => (
-            <div key={i} className="time-cell">
-              {String(i).padStart(2, "0")}:00
+              <span style={{ marginLeft: 6 }} className={isToday(day.date) ? "today-badge" : ""}>
+                {day.dayNumber}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Columnas por día */}
-        {days.map(day => {
-          const dayEvents = events.filter(e =>
-            e.date?.slice(0, 10) === day.date.toISOString().slice(0, 10)
-          );
-          const groups = groupOverlappingEvents(dayEvents);
+        {/* BODY */}
 
-          return (
-            <div
-              key={day.date.toISOString()}
-              className={`day-column ${isToday(day.date) ? "today-column" : ""}`}
-            >
-              {groups.map(group =>
-                group.map((event, index) => (
-                  <EventBlock
-                    key={event.id}
-                    event={event}
-                    index={index}
-                    total={group.length}
-                    updateEvent={updateEvent}
-                    onSelect={onSelectEvent}
-                  />
-                ))
-              )}
-            </div>
-          );
-        })}
+        <div className="calendar-body">
+
+          {/* Columna de horas */}
+          <div className="time-column">
+            {Array.from({ length: 24 }, (_, i) => (
+              <div key={i} className="time-cell">
+                {String(i).padStart(2, "0")}:00
+              </div>
+            ))}
+          </div>
+
+          {/* Columnas por día */}
+          {days.map(day => {
+            const dayEvents = events.filter(e =>
+              e.date?.slice(0, 10) === day.date.toISOString().slice(0, 10)
+            );
+            const groups = groupOverlappingEvents(dayEvents);
+
+            return (
+              <div
+                key={day.date.toISOString()}
+                className={`day-column ${isToday(day.date) ? "today-column" : ""}`}
+              >
+                {groups.map(group =>
+                  group.map((event, index) => (
+                    <EventBlock
+                      key={event.id}
+                      event={event}
+                      index={index}
+                      total={group.length}
+                      updateEvent={updateEvent}
+                      onSelect={onSelectEvent}
+                    />
+                  ))
+                )}
+              </div>
+            );
+          })}
+
+        </div>
       </div>
-
     </div>
   );
 }
